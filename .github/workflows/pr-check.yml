@@ -1,4 +1,4 @@
-name: Android CI
+name: PR Check
 
 on:
   push:
@@ -12,7 +12,7 @@ on:
       - "**.md"
 
 jobs:
-  build:
+  android-build:
     strategy:
       matrix:
         module: ["layback"]

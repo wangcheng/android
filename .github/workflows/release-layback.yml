@@ -1,4 +1,4 @@
-name: Add layback apk and add to release
+name: Release layback
 
 on:
   push:
@@ -6,10 +6,7 @@ on:
       - "layback-v*.*.*"
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: ./.github/workflows/release-app
-        with:
-          module: layback
+  call-release-app:
+    uses: ./.github/workflows/release-app.yml
+    with:
+      module: layback
