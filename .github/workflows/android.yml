@@ -28,7 +28,7 @@ jobs:
         uses: marceloprado/has-changed-path@v1
         id: has-changed-path
         with:
-          paths: ${{ matrix.module }}
+          paths: ${{ matrix.module }} .github/workflows
 
       - name: set up JDK 11
         if: steps.has-changed-path.outputs.changed == 'true'
@@ -47,6 +47,7 @@ jobs:
         run: ./gradlew ${{ matrix.module }}:build
 
       - uses: r0adkll/sign-android-release@v1
+        if: steps.has-changed-path.outputs.changed == 'true'
         name: Sign APK
         id: sign_apk
         with:
@@ -57,6 +58,7 @@ jobs:
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
       - uses: actions/upload-artifact@v3
+        if: steps.has-changed-path.outputs.changed == 'true'
         with:
           name: ${{ matrix.module }}-release
           path: ${{steps.sign_apk.outputs.signedReleaseFile}}
