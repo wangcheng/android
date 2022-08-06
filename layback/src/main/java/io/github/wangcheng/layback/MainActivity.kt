@@ -1,16 +1,16 @@
 package io.github.wangcheng.layback
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.FragmentActivity
 
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "MainActivity onCreate")
-    }
-
-    companion object {
-        private const val TAG = "MainActivity"
+        setContentView(R.layout.activity_main)
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.main_fragment, GridFragment())
+                .commitNow()
+        }
     }
 }
