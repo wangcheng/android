@@ -58,6 +58,5 @@ jobs:
 
       - uses: actions/upload-artifact@v3
         with:
-          name: Signed app bundle
           name: ${{ matrix.module }}-release
           path: ${{steps.sign_apk.outputs.signedReleaseFile}}
