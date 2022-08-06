@@ -29,7 +29,7 @@ jobs:
         run: ./gradlew ${{ inputs.module }}:assembleRelease
 
       - name: Rename file
-        run: mv ${{ inputs.module }}/build/outputs/apk/release/${{ inputs.module }}-release-unsigned.apk ${{ inputs.module }}/build/outputs/apk/release/${{ inputs.module }}-release-unsigned.apk
+        run: mv ${{ inputs.module }}/build/outputs/apk/release/${{ inputs.module }}-release-unsigned.apk ${{ inputs.module }}/build/outputs/apk/release/${{ inputs.module }}.apk
 
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
