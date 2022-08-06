@@ -45,9 +45,3 @@ jobs:
       - name: Build
         if: steps.has-changed-path.outputs.changed == 'true'
         run: ./gradlew ${{ matrix.module }}:check
-
-      - name: Preview lint result
-        id: html_preview
-        uses: pavi2410/html-preview-action@v2
-        with:
-          html_file: "/home/runner/work/android/android/${{ matrix.module }}/build/reports/lint-results-debug.html"
