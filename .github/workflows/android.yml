@@ -1,10 +1,10 @@
 name: Android CI
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
 
 jobs:
   build:
@@ -22,5 +22,13 @@ jobs:
 
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
-    - name: Build with Gradle
-      run: ./gradlew build
+    
+    - name: Check if layback is changed
+      uses: marceloprado/has-changed-path@v1
+      id: changed-layback
+      with:
+        paths: layback
+      
+    - name: Build layback
+      if: steps.changed-layback.outputs.changed == 'true'
+      run: ./gradlew layback:build
