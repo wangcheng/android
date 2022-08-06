@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<lint showAll="true" explainIssues="true">
+<lint>
     <issue id="all" severity="error" />
 </lint>
