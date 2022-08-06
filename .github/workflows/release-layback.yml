@@ -3,7 +3,7 @@ name: Release layback
 on:
   push:
     branches:
-      - 'workflow-test/**'
+      - "workflow-test/**"
     tags:
       - "layback-v*.*.*"
 
@@ -12,3 +12,4 @@ jobs:
     uses: ./.github/workflows/release-app.yml
     with:
       module: layback
+    secrets: inherit

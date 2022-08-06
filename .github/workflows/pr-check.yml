@@ -12,7 +12,7 @@ on:
       - "**.md"
 
 jobs:
-  android-build:
+  android-check:
     strategy:
       matrix:
         module: ["layback"]
@@ -44,4 +44,4 @@ jobs:
 
       - name: Build
         if: steps.has-changed-path.outputs.changed == 'true'
-        run: ./gradlew ${{ matrix.module }}:build
+        run: ./gradlew ${{ matrix.module }}:check
