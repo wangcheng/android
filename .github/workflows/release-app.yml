@@ -41,8 +41,8 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Add file to release
-        uses: djn24/add-asset-to-release@v1
+      - name: Draft release
+        uses: softprops/action-gh-release@v1
         with:
-          token: ${{secrets.GITHUB_TOKEN}}
-          path: ${{steps.sign_apk.outputs.signedReleaseFile}}
+          draft: true
+          files: ${{steps.sign_apk.outputs.signedReleaseFile}}
