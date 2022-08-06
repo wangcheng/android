@@ -2,36 +2,39 @@ name: Android CI
 
 on:
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
     paths-ignore:
-      - '**.md'
+      - "**.md"
 
 jobs:
   build:
+    strategy:
+      matrix:
+        module: ["layback"]
 
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
-      with:
+      - uses: actions/checkout@v3
+        with:
           fetch-depth: 0
-          
-    - name: set up JDK 11
-      uses: actions/setup-java@v3
-      with:
-        java-version: '11'
-        distribution: 'temurin'
-        cache: gradle
 
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    
-    - name: Check if layback is changed
-      uses: marceloprado/has-changed-path@v1
-      id: changed-layback
-      with:
-        paths: layback
-      
-    - name: Build layback
-      if: steps.changed-layback.outputs.changed == 'true'
-      run: ./gradlew layback:build
+      - name: Check if files are changed
+        uses: marceloprado/has-changed-path@v1
+        id: has-changed-path
+        with:
+          paths: ${{ matrix.module }}
+
+      - name: set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: "11"
+          distribution: "temurin"
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build
+        if: steps.has-changed-path.outputs.changed == 'true'
+        run: ./gradlew ${{ matrix.module }}:build
