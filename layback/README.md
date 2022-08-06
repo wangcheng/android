@@ -1,3 +1,3 @@
 # Layback Launcher
 
-A Launcher for Android TV
+A simple launcher for Android TV
