@@ -25,10 +25,7 @@ jobs:
         run: chmod +x gradlew
 
       - name: Build release APK
-        run: ./gradlew ${{ inputs.module }}:assembleRelease
-
-      - name: Rename file
-        run: mv ${{ inputs.module }}/build/outputs/apk/release/${{ inputs.module }}-release-unsigned.apk ${{ inputs.module }}/build/outputs/apk/release/${{ inputs.module }}.apk
+        run: ./gradlew ${{ inputs.module }}:build
 
       - name: Sign APK
         uses: r0adkll/sign-android-release@v1
