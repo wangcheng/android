@@ -45,3 +45,14 @@ jobs:
       - name: Build
         if: steps.has-changed-path.outputs.changed == 'true'
         run: ./gradlew ${{ matrix.module }}:build
+        
+      - uses: r0adkll/sign-android-release@v1
+        name: Sign APK
+        id: sign_apk
+        with:
+          releaseDirectory: ${{ matrix.module }}/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.SIGNING_KEY }}
+          alias: ${{ secrets.KEY_ALIAS }}
+          keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+
