@@ -79,7 +79,6 @@ open class GridFragment : Fragment() {
             row: Row?
         ) {
             if (item is LauncherItem) {
-                Log.d(TAG, "launchActivity: " + item.label)
                 launcherActivitiesManager.launchActivity(item)
             }
         }
