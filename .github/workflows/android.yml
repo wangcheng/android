@@ -28,9 +28,9 @@ jobs:
         uses: marceloprado/has-changed-path@v1
         id: has-changed-path
         with:
-          paths: ${{ matrix.module }}
+          paths: ${{ matrix.module }} .github/workflows
 
-      - name: set up JDK 11
+      - name: Set up JDK 11
         if: steps.has-changed-path.outputs.changed == 'true'
         uses: actions/setup-java@v3
         with:

@@ -1,0 +1,19 @@
+name: Add layback apk and add to release
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        module: ["layback"]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: ./.github/workflows/release-app
+        if: startsWith(GITHUB_REF, matrix.module)
+        with:
+          module: ${{ matrix.module }}
