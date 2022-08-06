@@ -7,7 +7,7 @@ import androidx.fragment.app.FragmentActivity
 class MainActivity : FragmentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "onCreate")
+        Log.d(TAG, "MainActivity onCreate")
     }
 
     companion object {
