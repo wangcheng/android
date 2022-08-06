@@ -26,6 +26,7 @@ jobs:
           paths: ${{ matrix.module }}
 
       - name: set up JDK 11
+        if: steps.has-changed-path.outputs.changed == 'true'
         uses: actions/setup-java@v3
         with:
           java-version: "11"
@@ -33,6 +34,7 @@ jobs:
           cache: gradle
 
       - name: Grant execute permission for gradlew
+        if: steps.has-changed-path.outputs.changed == 'true'
         run: chmod +x gradlew
 
       - name: Build
