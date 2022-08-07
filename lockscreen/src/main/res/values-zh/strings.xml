@@ -3,4 +3,5 @@
     <string name="launcher_label">锁屏</string>
     <string name="accessibility_service_name">一键锁屏服务</string>
     <string name="accessibility_service_description">启用之后，一键锁屏服务可以代你执行锁屏动作。</string>
+    <string name="accessibility_settings_toast">请启用「%1$s」</string>
 </resources>
