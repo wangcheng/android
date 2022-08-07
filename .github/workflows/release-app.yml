@@ -24,7 +24,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build release APK
+      - name: Build unsigned release APK
         run: ./gradlew ${{ inputs.module }}:assembleRelease
 
       - name: Rename file
@@ -40,7 +40,7 @@ jobs:
           keyStorePassword: ${{ secrets.KEY_STORE_PASSWORD }}
           keyPassword: ${{ secrets.KEY_PASSWORD }}
 
-      - name: Draft release
+      - name: Append APK to the release page in GitHub
         uses: softprops/action-gh-release@v1
         with:
           draft: true
