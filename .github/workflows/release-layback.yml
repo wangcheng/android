@@ -2,8 +2,6 @@ name: Release layback
 
 on:
   push:
-    branches:
-      - "workflow-test/**"
     tags:
       - "layback-v*.*.*"
 

@@ -1,17 +1,13 @@
-name: Release
+name: Release websearch
 
 on:
   push:
     tags:
-      - "*-v*.*.*"
+      - "websearch-v*.*.*"
 
 jobs:
   call-release-app:
-    strategy:
-      matrix:
-        module: ["websearch"]
     uses: ./.github/workflows/release-app.yml
-    if: startsWith(GITHUB_REF, matrix.module)
     with:
-      module: ${{ matrix.module }}
+      module: websearch
     secrets: inherit
