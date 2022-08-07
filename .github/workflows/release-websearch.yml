@@ -1,13 +1,13 @@
-name: Release layback
+name: Release websearch
 
 on:
   push:
     tags:
-      - "layback-v*.*.*"
+      - "websearch-v*.*.*"
 
 jobs:
   call-release-app:
     uses: ./.github/workflows/release-app.yml
     with:
-      module: layback
+      module: websearch
     secrets: inherit
