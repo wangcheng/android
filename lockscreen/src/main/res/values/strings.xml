@@ -2,6 +2,7 @@
     <string name="app_name">One Click Lock Screen</string>
     <string name="launcher_label">Lock Screen</string>
     <string name="accessibility_service_name">Lock Screen Service</string>
-    <string name="accessibility_service_description">When Lock Screen Service is on, it can lock the screen on your behalf.</string>
+    <string name="accessibility_service_summary">Enable to lock the screen</string>
+    <string name="accessibility_service_description">When Lock Screen Service is enabled, it can lock the screen on your behalf.</string>
     <string name="accessibility_settings_toast">Please enable “%1$s”</string>
 </resources>

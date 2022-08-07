@@ -10,4 +10,6 @@
     android:canRequestFilterKeyEvents="false"
     android:canRequestFingerprintGestures="false"
     android:canRequestTouchExplorationMode="false"
-    android:canRetrieveWindowContent="false" />
+    android:canRetrieveWindowContent="false"
+    android:canTakeScreenshot="false"
+    android:isAccessibilityTool="true" />
