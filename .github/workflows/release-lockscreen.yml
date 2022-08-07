@@ -14,6 +14,6 @@ jobs:
   upload-to-google-play:
     uses: ./.github/workflows/upload-to-google-play.yml
     with:
-      module: websearch
+      module: lockscreen
       applicationId: io.github.wangcheng678.lockscreen
     secrets: inherit
