@@ -1,6 +1,8 @@
 name: Release lockscreen
 
 on:
+  workflow_dispatch:
+
   push:
     tags:
       - "lockscreen-v*.*.*"
