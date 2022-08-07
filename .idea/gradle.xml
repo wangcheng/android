@@ -12,6 +12,7 @@
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/layback" />
             <option value="$PROJECT_DIR$/websearch" />
+            <option value="$PROJECT_DIR$/lockscreen" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,0 +1,13 @@
+name: Release lockscreen
+
+on:
+  push:
+    tags:
+      - "lockscreen-v*.*.*"
+
+jobs:
+  call-release-app:
+    uses: ./.github/workflows/release-app.yml
+    with:
+      module: lockscreen
+    secrets: inherit
