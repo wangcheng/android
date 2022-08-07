@@ -15,7 +15,7 @@ jobs:
   android-check:
     strategy:
       matrix:
-        module: ["layback", "websearch"]
+        module: ["layback", "websearch", "lockscreen"]
 
     runs-on: ubuntu-latest
 
