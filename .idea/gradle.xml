@@ -11,8 +11,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/layback" />
-            <option value="$PROJECT_DIR$/websearch" />
             <option value="$PROJECT_DIR$/lockscreen" />
+            <option value="$PROJECT_DIR$/notch" />
+            <option value="$PROJECT_DIR$/websearch" />
           </set>
         </option>
       </GradleProjectSettings>
