@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="button_text_no_permission">Grant Permission</string>
+    <string name="button_text_have_permission">Draw Display Cutouts</string>
+    <string name="text_no_permission">Please grant permission to draw on other apps.</string>
+    <string name="text_have_permission">Good to go.</string>
+</resources>

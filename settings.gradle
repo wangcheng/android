@@ -16,3 +16,4 @@ rootProject.name = "android"
 include ':layback'
 include ':websearch'
 include ':lockscreen'
+include ':notch'
