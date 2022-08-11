@@ -26,12 +26,12 @@ jobs:
         run: chmod +x gradlew
 
       - name: Diktat
+        id: diktat
         run: ./gradlew diktatCheck
-        continue-on-error: true
 
       - name: Upload SARIF file
         uses: github/codeql-action/upload-sarif@v2
-        if: ${{ success() }}
+        if: ${{ steps.diktat.conclusion == 'failure' }}
         with:
           sarif_file: build/diktat.sarif
           category: my-analysis-tool
