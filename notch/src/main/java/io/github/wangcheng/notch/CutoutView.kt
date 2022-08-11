@@ -45,7 +45,9 @@ class CutoutView(context: Context, attributeSet: AttributeSet) : View(context, a
     }
 
     override fun onApplyWindowInsets(insets: WindowInsets?): WindowInsets {
-        Log.d("CutoutView", "onApplyWindowInsets")
+        if (BuildConfig.DEBUG) {
+            Log.d("CutoutView", "onApplyWindowInsets")
+        }
         windowInsets = insets
         invalidate()
         return super.onApplyWindowInsets(insets)
