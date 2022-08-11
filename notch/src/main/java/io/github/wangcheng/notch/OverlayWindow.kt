@@ -21,7 +21,9 @@ class OverlayWindow(private val context: Context) {
 
     private fun initWindowLayoutParams(): WindowManager.LayoutParams {
         val bounds = windowManager.currentWindowMetrics.bounds.also {
-            Log.d("Metrics", "${it.width()}x${it.height()}")
+            if (BuildConfig.DEBUG) {
+                Log.d("Metrics", "${it.width()}x${it.height()}")
+            }
         }
 
         return WindowManager.LayoutParams(
@@ -44,7 +46,9 @@ class OverlayWindow(private val context: Context) {
                 windowManager.addView(overlayWindowView, windowLayoutParams)
             }
         } catch (e: Exception) {
-            Log.d("OverlayWindow", "Error: $e")
+            if (BuildConfig.DEBUG) {
+                Log.d("OverlayWindow", "Error: $e")
+            }
         }
     }
 
@@ -60,7 +64,9 @@ class OverlayWindow(private val context: Context) {
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
         } catch (e: java.lang.Exception) {
-            Log.d("Error2", e.toString())
+            if (BuildConfig.DEBUG) {
+                Log.d("Error2", e.toString())
+            }
         }
     }
 }

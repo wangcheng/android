@@ -24,21 +24,12 @@ class CutoutView(context: Context, attributeSet: AttributeSet) : View(context, a
         super.onDraw(canvas)
         val displayCutout = windowInsets?.displayCutout ?: return
 
-        Log.d("CutoutView", displayCutout.toString())
-
-        val parentView = parent as View
-
-        parentView.layoutParams.let {
-            Log.d("Metrics", "layoutParams ${it.width}x${it.height}")
-        }
-
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             displayCutout.cutoutPath?.let {
                 canvas.drawPath(it, paint)
             }
         } else {
             displayCutout.boundingRects.forEach {
-                Log.d("Metrics", "Rect ${it.left},${it.top},${it.right},${it.bottom}")
                 canvas.drawRect(it, paint)
             }
         }
