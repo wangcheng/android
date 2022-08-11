@@ -57,8 +57,8 @@ class IconTextBanner(private val label: String, private val icon: Drawable?) : D
                 (CARD_WIDTH - textMarginLeft - MARGIN).toInt(),
             )
             .build()
-        val textMarginTop = (CARD_HEIGHT - staticLayout.height) / 2f
-        canvas.withTranslation(textMarginLeft, textMarginTop) {
+        val textMarginTop = (CARD_HEIGHT - staticLayout.height) / 2
+        canvas.withTranslation(textMarginLeft, textMarginTop.toFloat()) {
             staticLayout.draw(this)
         }
     }

@@ -31,8 +31,9 @@ class CardPresenter : Presenter() {
                 cardView.cardType = ImageCardView.CARD_TYPE_INFO_OVER
                 cardView.contentText = item.description
             }
+            // use IconTextBanner if no banner or banner is not wide
             val shouldUseIconTextBanner = banner?.run {
-                intrinsicWidth.toFloat() / intrinsicHeight.toFloat() <= 1f
+                intrinsicWidth <= intrinsicHeight
             } ?: true
             if (shouldUseIconTextBanner) {
                 cardView.mainImage = IconTextBanner(item.label, banner)
