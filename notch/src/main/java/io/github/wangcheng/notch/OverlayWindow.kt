@@ -12,9 +12,7 @@ import android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALW
 
 class OverlayWindow(private val context: Context) {
     private val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
-
     private val windowLayoutParams = initWindowLayoutParams()
-
     private val layoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -23,7 +21,9 @@ class OverlayWindow(private val context: Context) {
 
     private fun initWindowLayoutParams(): WindowManager.LayoutParams {
         val bounds = windowManager.currentWindowMetrics.bounds.also {
-            Log.d("Metrics", "${it.width()}x${it.height()}")
+            if (BuildConfig.DEBUG) {
+                Log.d("Metrics", "${it.width()}x${it.height()}")
+            }
         }
 
         return WindowManager.LayoutParams(
@@ -31,10 +31,10 @@ class OverlayWindow(private val context: Context) {
             bounds.height(),
             WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY,
             WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE or
-                WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
-                WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
-                WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
-            PixelFormat.TRANSLUCENT
+                    WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
+                    WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
+                    WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
+            PixelFormat.TRANSLUCENT,
         ).also {
             it.layoutInDisplayCutoutMode = LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
         }
@@ -42,13 +42,13 @@ class OverlayWindow(private val context: Context) {
 
     fun open() {
         try {
-            if (overlayWindowView.windowToken == null) {
-                if (overlayWindowView.parent == null) {
-                    windowManager.addView(overlayWindowView, windowLayoutParams)
-                }
+            if (overlayWindowView.windowToken == null && overlayWindowView.parent == null) {
+                windowManager.addView(overlayWindowView, windowLayoutParams)
             }
         } catch (e: Exception) {
-            Log.d("OverlayWindow", "Error: $e")
+            if (BuildConfig.DEBUG) {
+                Log.d("OverlayWindow", "Error: $e")
+            }
         }
     }
 
@@ -64,7 +64,9 @@ class OverlayWindow(private val context: Context) {
             // the above steps are necessary when you are adding and removing
             // the view simultaneously, it might give some exceptions
         } catch (e: java.lang.Exception) {
-            Log.d("Error2", e.toString())
+            if (BuildConfig.DEBUG) {
+                Log.d("Error2", e.toString())
+            }
         }
     }
 }

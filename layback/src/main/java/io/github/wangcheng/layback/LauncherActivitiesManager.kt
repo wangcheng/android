@@ -56,65 +56,63 @@ class LauncherActivitiesManager(private val context: Context) {
         return packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
             .map {
                 Pair(
-                    it.activityInfo, if (leanback)
+                    it.activityInfo,
+                    if (leanback) {
                         packageManager.getLeanbackLaunchIntentForPackage(it.activityInfo.packageName)
-                    else packageManager.getLaunchIntentForPackage(it.activityInfo.packageName)
+                    } else {
+                        packageManager.getLaunchIntentForPackage(it.activityInfo.packageName)
+                    },
                 )
             }
-            .filter { it.first.isEnabled && it.first.packageName != context.packageName && it.second != null }
-            .map {
-                LauncherItem(
-                    id = it.first.packageName,
-                    label = it.first.loadLabel(packageManager).toString(),
-                    loadBanner = { loadBanner(it.first) },
-                    launchIntent = it.second as Intent,
-                    isInput = false,
-                    description = null,
-                )
+            .filter { (activityInfo, launchIntent) ->
+                activityInfo.isEnabled && activityInfo.packageName != context.packageName && launchIntent != null
+            }
+            .map {(activityInfo, launchIntent) ->
+                createLauncherItem(activityInfo, launchIntent!!)
             }
     }
 
     private fun getSettingsActivities(): List<LauncherItem> {
         val intent = Intent(Settings.ACTION_SETTINGS)
         return packageManager.queryIntentActivities(intent, PackageManager.MATCH_ALL)
-            .map { it.activityInfo }.map {
-                LauncherItem(
-                    id = it.packageName,
-                    label = it.loadLabel(packageManager).toString(),
-                    loadBanner = { loadBanner(it) },
-                    launchIntent = intent,
-                    isInput = false,
-                    description = null,
-                )
-            }
+            .map { it.activityInfo }.map { createLauncherItem(it, intent) }
     }
+
+    private fun createLauncherItem(activityInfo: ActivityInfo, launchIntent: Intent): LauncherItem = LauncherItem(
+        id = activityInfo.packageName,
+        label = activityInfo.loadLabel(packageManager).toString(),
+        loadBanner = { loadBanner(activityInfo) },
+        launchIntent = launchIntent,
+        isInput = false,
+        description = null,
+    )
 
     private fun getInputItems(): List<LauncherItem> {
         val tvInputList =
             tvInputManager.tvInputList.filter { it.isPassthroughInput && !it.isHidden(context) }
         val tvInputMap = tvInputList.associateBy { it.id }
-        return removeInputWithChildren(tvInputList).sortedBy { it.parentId ?: it.id }.map {
-            val parentInput = tvInputMap[it.parentId]
-            val selfLabel = getInputLabel(context, it)
+        return removeInputWithChildren(tvInputList).sortedBy { it.parentId ?: it.id }.map { tvInputInfo ->
+            val parentInput =
+                tvInputMap[tvInputInfo.parentId]
+            val selfLabel = getInputLabel(context, tvInputInfo)
             val parentLabel = if (parentInput != null) getInputLabel(context, parentInput) else null
-            val inputType = getInputType(it.type)
+            val inputType = getInputType(tvInputInfo.type)
             LauncherItem(
-                id = it.id,
+                id = tvInputInfo.id,
                 label = parentLabel ?: selfLabel,
-                loadBanner = { it.loadIcon(context) },
-                launchIntent = createInputIntent(it),
+                loadBanner = { tvInputInfo.loadIcon(context) },
+                launchIntent = createInputIntent(tvInputInfo),
                 isInput = true,
-                description = if (parentInput == null) inputType else "$inputType ($selfLabel)"
+                description = if (parentInput == null) inputType else "$inputType ($selfLabel)",
             )
         }
     }
 
-    private fun isInputConnected(info: TvInputInfo): Boolean {
-        return tvInputManager.getInputState(info.id) != TvInputManager.INPUT_STATE_DISCONNECTED
-    }
+    private fun isInputConnected(info: TvInputInfo): Boolean =
+        tvInputManager.getInputState(info.id) != TvInputManager.INPUT_STATE_DISCONNECTED
 
     private fun removeInputWithChildren(list: List<TvInputInfo>): List<TvInputInfo> {
-        val parentIds = mutableSetOf<String>()
+        val parentIds: MutableSet<String> = mutableSetOf()
         for (i in list) {
             val parentId = i.parentId
             if (i.parentId != null) {
@@ -125,9 +123,13 @@ class LauncherActivitiesManager(private val context: Context) {
     }
 
     private fun createInputIntent(inputInfo: TvInputInfo): Intent {
-        val uri = if (inputInfo.isPassthroughInput) TvContract.buildChannelUriForPassthroughInput(
-            inputInfo.id
-        ) else TvContract.buildChannelsUriForInput(inputInfo.id)
+        val uri = if (inputInfo.isPassthroughInput) {
+            TvContract.buildChannelUriForPassthroughInput(
+                inputInfo.id,
+            )
+        } else {
+            TvContract.buildChannelsUriForInput(inputInfo.id)
+        }
         return Intent(Intent.ACTION_VIEW, uri)
     }
 
@@ -140,20 +142,18 @@ class LauncherActivitiesManager(private val context: Context) {
         return label.toString()
     }
 
-    private fun getInputType(inputType: Int): String {
-        return when (inputType) {
-            TvInputInfo.TYPE_COMPONENT -> "COMPONENT"
-            TvInputInfo.TYPE_COMPOSITE -> "COMPOSITE"
-            TvInputInfo.TYPE_DISPLAY_PORT -> "DISPLAY_PORT"
-            TvInputInfo.TYPE_DVI -> "DVI"
-            TvInputInfo.TYPE_HDMI -> "HDMI"
-            TvInputInfo.TYPE_OTHER -> "OTHER"
-            TvInputInfo.TYPE_SCART -> "SCART"
-            TvInputInfo.TYPE_SVIDEO -> "S VIDEO"
-            TvInputInfo.TYPE_TUNER -> "TUNER"
-            TvInputInfo.TYPE_VGA -> "VGA"
-            else -> "UNKNOWN INPUT"
-        }
+    private fun getInputType(inputType: Int): String = when (inputType) {
+        TvInputInfo.TYPE_COMPONENT -> "COMPONENT"
+        TvInputInfo.TYPE_COMPOSITE -> "COMPOSITE"
+        TvInputInfo.TYPE_DISPLAY_PORT -> "DISPLAY_PORT"
+        TvInputInfo.TYPE_DVI -> "DVI"
+        TvInputInfo.TYPE_HDMI -> "HDMI"
+        TvInputInfo.TYPE_OTHER -> "OTHER"
+        TvInputInfo.TYPE_SCART -> "SCART"
+        TvInputInfo.TYPE_SVIDEO -> "S VIDEO"
+        TvInputInfo.TYPE_TUNER -> "TUNER"
+        TvInputInfo.TYPE_VGA -> "VGA"
+        else -> "UNKNOWN INPUT"
     }
 
     companion object {

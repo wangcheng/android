@@ -15,9 +15,9 @@ import androidx.leanback.widget.RowPresenter
 import androidx.leanback.widget.VerticalGridPresenter
 
 open class GridFragment : Fragment() {
-    private lateinit var mAdapter: ArrayObjectAdapter
-    private lateinit var mGridPresenter: VerticalGridPresenter
-    private var mGridViewHolder: VerticalGridPresenter.ViewHolder? = null
+    private var gridViewHolder1: VerticalGridPresenter.ViewHolder? = null
+    private lateinit var adapter: ArrayObjectAdapter
+    private lateinit var gridPresenter: VerticalGridPresenter
     private lateinit var launcherActivitiesManager: LauncherActivitiesManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,16 +28,17 @@ open class GridFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?,
     ): View? {
         val root = inflater.inflate(
             R.layout.grid_fragment,
-            container, false
+            container, false,
         ) as ViewGroup
         val gridFrame = root.findViewById<View>(R.id.grid_frame) as ViewGroup
-        val gridViewHolder = mGridPresenter.onCreateViewHolder(gridFrame)
-        mGridViewHolder = gridViewHolder
+        val gridViewHolder = gridPresenter.onCreateViewHolder(gridFrame)
+        gridViewHolder1 = gridViewHolder
         gridFrame.addView(gridViewHolder.view)
         updateAdapter()
         return root
@@ -45,30 +46,30 @@ open class GridFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        mGridViewHolder!!.gridView.swapAdapter(null, true)
-        mGridViewHolder = null
+        gridViewHolder1!!.gridView.swapAdapter(null, true)
+        gridViewHolder1 = null
     }
 
     private fun updateAdapter() {
-        if (mGridViewHolder != null) {
-            mGridPresenter.onBindViewHolder(mGridViewHolder, mAdapter)
+        if (gridViewHolder1 != null) {
+            gridPresenter.onBindViewHolder(gridViewHolder1, adapter)
         }
     }
 
     private fun setupAdapter() {
         launcherActivitiesManager = LauncherActivitiesManager(requireContext())
-        mAdapter = ArrayObjectAdapter(CardPresenter())
+        adapter = ArrayObjectAdapter(CardPresenter())
         updateAdapter()
         val allItems = launcherActivitiesManager.getAllLauncherActivities()
         for (i in allItems) {
-            mAdapter.add(i)
+            adapter.add(i)
         }
     }
 
     private fun setupGridPresenter() {
-        mGridPresenter = VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_LARGE, false)
-        mGridPresenter.numberOfColumns = 5
-        mGridPresenter.onItemViewClickedListener = ItemViewClickedListener()
+        gridPresenter = VerticalGridPresenter(FocusHighlight.ZOOM_FACTOR_LARGE, false)
+        gridPresenter.numberOfColumns = 5
+        gridPresenter.onItemViewClickedListener = ItemViewClickedListener()
     }
 
     private inner class ItemViewClickedListener : OnItemViewClickedListener {
@@ -76,7 +77,7 @@ open class GridFragment : Fragment() {
             itemViewHolder: Presenter.ViewHolder,
             item: Any,
             rowViewHolder: RowPresenter.ViewHolder?,
-            row: Row?
+            row: Row?,
         ) {
             if (item is LauncherItem) {
                 launcherActivitiesManager.launchActivity(item)

@@ -19,7 +19,6 @@ class IconTextBanner(private val label: String, private val icon: Drawable?) : D
         isFilterBitmap = true
         isDither = true
     }
-
     private val textPaint = TextPaint().apply {
         textSize = TEXT_SIZE
         style = Paint.Style.FILL
@@ -43,7 +42,7 @@ class IconTextBanner(private val label: String, private val icon: Drawable?) : D
         if (icon is BitmapDrawable) {
             val palette = Palette.from(icon.bitmap).generate()
             val swatch = palette.darkVibrantSwatch
-            if (swatch != null) {
+            swatch?.let {
                 return Pair(Color.WHITE, swatch.rgb)
             }
         }
@@ -55,11 +54,11 @@ class IconTextBanner(private val label: String, private val icon: Drawable?) : D
         val staticLayout = StaticLayout.Builder
             .obtain(
                 text, 0, text.length, textPaint,
-                (CARD_WIDTH - textMarginLeft - MARGIN).toInt()
+                (CARD_WIDTH - textMarginLeft - MARGIN).toInt(),
             )
             .build()
-        val textMarginTop = (CARD_HEIGHT - staticLayout.height) / 2f
-        canvas.withTranslation(textMarginLeft, textMarginTop) {
+        val textMarginTop = (CARD_HEIGHT - staticLayout.height) / 2
+        canvas.withTranslation(textMarginLeft, textMarginTop.toFloat()) {
             staticLayout.draw(this)
         }
     }
@@ -69,7 +68,7 @@ class IconTextBanner(private val label: String, private val icon: Drawable?) : D
             MARGIN,
             (CARD_HEIGHT - ICON_SIZE) / 2,
             MARGIN + ICON_SIZE,
-            (CARD_HEIGHT + ICON_SIZE) / 2
+            (CARD_HEIGHT + ICON_SIZE) / 2,
         )
         canvas.drawBitmap(icon.bitmap, null, destRect, imagePaint)
     }
@@ -86,13 +85,9 @@ class IconTextBanner(private val label: String, private val icon: Drawable?) : D
     override fun getOpacity(): Int =
         PixelFormat.OPAQUE
 
-    override fun getIntrinsicWidth(): Int {
-        return CARD_WIDTH
-    }
+    override fun getIntrinsicWidth(): Int = CARD_WIDTH
 
-    override fun getIntrinsicHeight(): Int {
-        return CARD_HEIGHT
-    }
+    override fun getIntrinsicHeight(): Int = CARD_HEIGHT
 
     companion object {
         private const val TEXT_SIZE = 32F
