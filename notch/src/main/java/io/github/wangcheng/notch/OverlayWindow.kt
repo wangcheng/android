@@ -12,9 +12,7 @@ import android.view.WindowManager.LayoutParams.LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALW
 
 class OverlayWindow(private val context: Context) {
     private val windowManager = context.getSystemService(WINDOW_SERVICE) as WindowManager
-
     private val windowLayoutParams = initWindowLayoutParams()
-
     private val layoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
@@ -34,7 +32,7 @@ class OverlayWindow(private val context: Context) {
                 WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS or
                 WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE or
                 WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS,
-            PixelFormat.TRANSLUCENT
+            PixelFormat.TRANSLUCENT,
         ).also {
             it.layoutInDisplayCutoutMode = LAYOUT_IN_DISPLAY_CUTOUT_MODE_ALWAYS
         }
@@ -42,10 +40,8 @@ class OverlayWindow(private val context: Context) {
 
     fun open() {
         try {
-            if (overlayWindowView.windowToken == null) {
-                if (overlayWindowView.parent == null) {
-                    windowManager.addView(overlayWindowView, windowLayoutParams)
-                }
+            if (overlayWindowView.windowToken == null && overlayWindowView.parent == null) {
+                windowManager.addView(overlayWindowView, windowLayoutParams)
             }
         } catch (e: Exception) {
             Log.d("OverlayWindow", "Error: $e")

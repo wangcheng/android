@@ -35,16 +35,14 @@ class MainActivity : Activity() {
         }
     }
 
-    private fun checkPermission(): Boolean {
-        return Settings.canDrawOverlays(applicationContext)
-    }
+    private fun hasPermission(): Boolean = Settings.canDrawOverlays(applicationContext)
 
     private fun updateText() {
         val textId =
-            if (checkPermission()) R.string.text_have_permission else R.string.text_no_permission
+            if (hasPermission()) R.string.text_have_permission else R.string.text_no_permission
         findViewById<TextView>(R.id.text).text = getString(textId)
         val buttonTextId =
-            if (checkPermission()) R.string.button_text_have_permission else R.string.button_text_no_permission
+            if (hasPermission()) R.string.button_text_have_permission else R.string.button_text_no_permission
         findViewById<Button>(R.id.button).text = getString(buttonTextId)
     }
 

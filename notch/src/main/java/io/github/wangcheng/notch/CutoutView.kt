@@ -13,7 +13,6 @@ import android.view.WindowInsets
 
 class CutoutView(context: Context, attributeSet: AttributeSet) : View(context, attributeSet) {
     private var windowInsets: WindowInsets? = null
-
     private val paint = Paint().apply {
         style = Paint.Style.FILL
         color = Color.BLACK
