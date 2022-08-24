@@ -21,7 +21,9 @@ class MainActivity : Activity() {
     }
 
     private fun openWeiboDetailPage(weiboId: String) {
-        Log.d(TAG, "weiboId: $weiboId")
+        if (BuildConfig.DEBUG) {
+            Log.d(TAG, "weiboId: $weiboId")
+        }
         val weiboAppIntent =
             Intent(Intent.ACTION_VIEW, Uri.parse("sinaweibo://detail?mblogid=$weiboId"))
         weiboAppIntent.addCategory(Intent.CATEGORY_DEFAULT)
