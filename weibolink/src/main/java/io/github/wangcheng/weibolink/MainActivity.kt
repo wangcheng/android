@@ -4,16 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 
 class MainActivity : Activity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (intent.action == Intent.ACTION_VIEW) {
-            val url = intent.data.toString()
-            val qingxiangMatch = WeiboLinkUtils.convertWeiboQingxiang(url)
-            if (qingxiangMatch != null) {
-                startViewUrlActivity(qingxiangMatch)
-            }
+            openWeiboDetailPageFromUrl(intent.data.toString())
         }
         finish()
     }
@@ -21,6 +18,26 @@ class MainActivity : Activity() {
     private fun startViewUrlActivity(url: String) {
         val intent = Intent(Intent.ACTION_VIEW, Uri.parse(url))
         startActivity(intent)
+    }
+
+    private fun openWeiboDetailPage(weiboId: String) {
+        Log.d(TAG, "weiboId: $weiboId")
+        val weiboAppIntent =
+            Intent(Intent.ACTION_VIEW, Uri.parse("sinaweibo://detail?mblogid=$weiboId"))
+        weiboAppIntent.addCategory(Intent.CATEGORY_DEFAULT)
+        if (weiboAppIntent.resolveActivity(packageManager) != null) {
+            startActivity(weiboAppIntent)
+        } else {
+            startViewUrlActivity(WeiboLinkUtils.createWeiboCnUrl(weiboId))
+        }
+    }
+
+    private fun openWeiboDetailPageFromUrl(url: String) {
+        val weiboId = WeiboLinkUtils.getWeiboIdFromUrl(url)
+        if (weiboId != null) {
+            return openWeiboDetailPage(weiboId)
+        }
+        return startViewUrlActivity(url)
     }
 
     companion object {

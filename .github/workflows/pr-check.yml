@@ -15,7 +15,7 @@ jobs:
   android-check:
     strategy:
       matrix:
-        module: ["layback", "websearch", "lockscreen", "notch"]
+        module: [ "layback", "websearch", "lockscreen", "notch", "weibolink" ]
 
     runs-on: ubuntu-latest
 

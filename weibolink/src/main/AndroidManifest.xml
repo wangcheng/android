@@ -3,6 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.github.wangcheng.weibolink">
 
+    <queries>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <data
+                android:scheme="sinaweibo"
+                android:host="detail" />
+        </intent>
+    </queries>
     <application
         android:allowBackup="true"
         android:label="@string/app_name"
