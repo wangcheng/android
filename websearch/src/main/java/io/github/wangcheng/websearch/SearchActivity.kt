@@ -1,43 +1,41 @@
-package io.github.wangcheng.websearch;
+package io.github.wangcheng.websearch
 
-import android.app.Activity;
-import android.app.SearchManager;
-import android.content.Intent;
-import android.net.Uri;
-import android.os.Bundle;
+import android.app.Activity
+import android.app.SearchManager
+import android.content.Intent
+import android.net.Uri
+import android.os.Bundle
 
-public class SearchActivity extends Activity {
-    static Intent getSearchIntent(String query) {
-        Uri urlFromQuery = Uri.parse(query);
-        if (urlFromQuery.isAbsolute()) {
-            return new Intent(Intent.ACTION_VIEW, urlFromQuery);
+class SearchActivity : Activity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val intent = intent
+        val action = intent.action
+        val query: String? = if (Intent.ACTION_PROCESS_TEXT == action) {
+            intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString()
+        } else if (Intent.ACTION_SEARCH == action || Intent.ACTION_WEB_SEARCH == action) {
+            intent.getStringExtra(SearchManager.QUERY)
+        } else {
+            finish()
+            return
         }
-        Uri.Builder builder = new Uri.Builder();
-        Uri url = builder.scheme("https").authority("www.google.com").appendPath("search").appendQueryParameter("q", query).build();
-        return new Intent(Intent.ACTION_VIEW, url);
+        val resultIntent = getSearchIntent(query)
+        if (resultIntent.resolveActivity(packageManager) != null) {
+            startActivity(resultIntent)
+        }
+        finish()
     }
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        Intent intent = getIntent();
-        String action = intent.getAction();
-        String query;
-        if (Intent.ACTION_PROCESS_TEXT.equals(action)) {
-            query = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString();
-        } else if (Intent.ACTION_SEARCH.equals(action) || Intent.ACTION_WEB_SEARCH.equals(action)) {
-            query = intent.getStringExtra(SearchManager.QUERY);
-        } else {
-            finish();
-            return;
+    companion object {
+        fun getSearchIntent(query: String?): Intent {
+            val urlFromQuery = Uri.parse(query)
+            if (urlFromQuery.isAbsolute) {
+                return Intent(Intent.ACTION_VIEW, urlFromQuery)
+            }
+            val builder = Uri.Builder()
+            val url = builder.scheme("https").authority("www.google.com").appendPath("search")
+                .appendQueryParameter("q", query).build()
+            return Intent(Intent.ACTION_VIEW, url)
         }
-
-        Intent resultIntent = getSearchIntent(query);
-        if (resultIntent.resolveActivity(getPackageManager()) != null) {
-            startActivity(resultIntent);
-        }
-
-        finish();
     }
 }

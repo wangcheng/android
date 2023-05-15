@@ -1,68 +1,56 @@
-package io.github.wangcheng.lockscreen;
+package io.github.wangcheng.lockscreen
 
-import android.accessibilityservice.AccessibilityService;
-import android.content.ContentResolver;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Build;
-import android.os.VibrationEffect;
-import android.os.Vibrator;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.accessibility.AccessibilityEvent;
+import android.accessibilityservice.AccessibilityService
+import android.content.Intent
+import android.os.Build
+import android.os.VibrationAttributes
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.provider.Settings
+import android.util.Log
+import android.view.accessibility.AccessibilityEvent
 
-public class LockScreenAccessibilityService extends AccessibilityService {
-    @Override
-    public void onAccessibilityEvent(AccessibilityEvent event) {
-    }
-
-    @Override
-    public void onInterrupt() {
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
-        String action = intent.getAction();
-        if (action != null && action.equals(MainActivity.ACTION_LOCK_SCREEN)) {
-            boolean isSuccessful = performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN);
+@Suppress("DEPRECATION")
+class LockScreenAccessibilityService : AccessibilityService() {
+    override fun onAccessibilityEvent(event: AccessibilityEvent) {}
+    override fun onInterrupt() {}
+    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+        val action = intent.action
+        if (action != null && action == MainActivity.ACTION_LOCK_SCREEN) {
+            val isSuccessful = performGlobalAction(GLOBAL_ACTION_LOCK_SCREEN)
             if (isSuccessful) {
-                performHapticFeedbackIfEnabled();
+                performHapticFeedbackIfEnabled()
             } else {
-                Log.d("LockScreenAccessibilityService", "failed ");
+                Log.d("LockScreenAccessibilityService", "failed ")
             }
         }
-        return super.onStartCommand(intent, flags, startId);
+        return super.onStartCommand(intent, flags, startId)
     }
 
-    private boolean isHapticFeedbackEnabled() {
-        ContentResolver contentResolver = getContentResolver();
-
-        int value = Settings.System.getInt(contentResolver,
-                Settings.System.HAPTIC_FEEDBACK_ENABLED, 0);
-        
-        return value != 0;
-    }
-
-    private void performHapticFeedbackIfEnabled() {
-        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
-
-        if (vibrator == null) return;
-
-        VibrationEffect effect = Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q
-                ? VibrationEffect.createPredefined(VibrationEffect.EFFECT_TICK)
-                : VibrationEffect.createOneShot(5, VibrationEffect.DEFAULT_AMPLITUDE);
-
-/*
- TODO: use VibrationAttributes.USAGE_TOUCH in API 33 to replace isHapticFeedbackEnabled.
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
-            VibrationAttributes attr = new VibrationAttributes.Builder().setUsage(VibrationAttributes.USAGE_TOUCH).build();
-            vibrator.vibrate(effect, attr);
-            return;
+    private val isHapticFeedbackEnabled: Boolean
+        get() {
+            val contentResolver = contentResolver
+            val value = Settings.System.getInt(
+                contentResolver,
+                Settings.System.HAPTIC_FEEDBACK_ENABLED, 0
+            )
+            return value != 0
         }
-*/
 
-        if (isHapticFeedbackEnabled()) {
-            vibrator.vibrate(effect);
+    private fun performHapticFeedbackIfEnabled() {
+        val vibrator = getSystemService(VIBRATOR_SERVICE) as Vibrator
+        val effect =
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) VibrationEffect.createPredefined(
+                VibrationEffect.EFFECT_TICK
+            ) else VibrationEffect.createOneShot(5, VibrationEffect.DEFAULT_AMPLITUDE)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            val attr =
+                VibrationAttributes.Builder().setUsage(VibrationAttributes.USAGE_TOUCH).build()
+            vibrator.vibrate(effect, attr)
+            return
+        }
+        if (isHapticFeedbackEnabled) {
+            vibrator.vibrate(effect)
         }
     }
 }
