@@ -16,7 +16,8 @@ android {
     namespace = "io.github.wangcheng.lockscreen"
 
     lint {
-        textOutput = file("stdout")
+        disable += "UnknownNullness"
+        disable += "MonochromeLauncherIcon"
     }
 
     compileOptions {

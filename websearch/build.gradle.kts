@@ -16,7 +16,7 @@ android {
     namespace = "io.github.wangcheng.websearch"
 
     lint {
-        textOutput = file("stdout")
+        disable += "UnknownNullness"
     }
 
     compileOptions {
