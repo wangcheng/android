@@ -2,8 +2,8 @@
 plugins {
     id("com.android.application") version "8.0.1" apply false
     id("com.android.library") version "8.0.1" apply false
-    id("org.jetbrains.kotlin.android") version "1.7.10" apply false
-    id("org.cqfn.diktat.diktat-gradle-plugin") version "1.2.3"
+    id("org.jetbrains.kotlin.android") version "1.8.21" apply false
+    id("org.cqfn.diktat.diktat-gradle-plugin") version "1.2.5"
 }
 
 tasks {
