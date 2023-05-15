@@ -33,8 +33,11 @@ class SearchActivity : Activity() {
                 return Intent(Intent.ACTION_VIEW, urlFromQuery)
             }
             val builder = Uri.Builder()
-            val url = builder.scheme("https").authority("www.google.com").appendPath("search")
-                .appendQueryParameter("q", query).build()
+            val url = builder.scheme("https")
+                .authority("www.google.com")
+                .appendPath("search")
+                .appendQueryParameter("q", query)
+                .build()
             return Intent(Intent.ACTION_VIEW, url)
         }
     }

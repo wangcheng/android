@@ -16,8 +16,9 @@ class MainActivity : Activity() {
         val accessibilityManager =
             context.getSystemService(ACCESSIBILITY_SERVICE) as AccessibilityManager
         if (isAccessibilityServiceEnabled(context, accessibilityManager)) {
-            val intent = Intent(applicationContext, LockScreenAccessibilityService::class.java)
-            intent.action = ACTION_LOCK_SCREEN
+            val intent = Intent(applicationContext, LockScreenAccessibilityService::class.java).apply {
+                action = ACTION_LOCK_SCREEN
+            }
             startService(intent)
         } else {
             openSettings()
@@ -44,7 +45,9 @@ class MainActivity : Activity() {
                 am.getEnabledAccessibilityServiceList(AccessibilityServiceInfo.FEEDBACK_ALL_MASK)
             for (enabledService in enabledServices) {
                 val enabledServiceInfo = enabledService.resolveInfo.serviceInfo
-                if (enabledServiceInfo.packageName == context.packageName) return true
+                if (enabledServiceInfo.packageName == context.packageName) {
+                    return true
+                }
             }
             return false
         }
