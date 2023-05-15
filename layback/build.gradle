@@ -4,12 +4,12 @@ plugins {
 }
 
 android {
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "io.github.wangcheng.layback"
         minSdk 26
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "0.1.0"
     }
@@ -20,7 +20,9 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
+
     namespace 'io.github.wangcheng.layback'
+
     lint {
         textOutput file('stdout')
     }
@@ -28,8 +30,7 @@ android {
 }
 
 dependencies {
-
-    implementation 'androidx.core:core-ktx:1.8.0'
+    implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.leanback:leanback:1.0.0'
     implementation 'androidx.palette:palette-ktx:1.0.0'
 }
