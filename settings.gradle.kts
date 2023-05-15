@@ -7,9 +7,10 @@ pluginManagement {
         mavenCentral()
     }
 }
-@Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
+    @Suppress("UnstableApiUsage")
     repositoriesMode.set(FAIL_ON_PROJECT_REPOS)
+    @Suppress("UnstableApiUsage")
     repositories {
         google()
         mavenCentral()
