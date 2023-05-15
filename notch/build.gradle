@@ -27,8 +27,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    lintOptions {
-        textOutput 'stdout'
+    namespace 'io.github.wangcheng.notch'
+    lint {
+        textOutput file('stdout')
     }
 }
 
